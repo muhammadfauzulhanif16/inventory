@@ -4,8 +4,9 @@
     <div class="grow flex">
         <x-sidebar :$active />
 
-        @if($action && $method)
-        <form class="flex flex-col grow w-0" action="{{ route($action) }}" method="{{ $method }}">
+        @if($action)
+        <form class="flex flex-col grow w-0" action="{{ (explode(" ", $title)[0] === "Add") ? route($action) : $action }}" method="post">
+            @method($method ?? "")
             @csrf
 
             <x-section-header :$title :$subTitle :$action :$method :$link :$buttonName :$buttonIcon />

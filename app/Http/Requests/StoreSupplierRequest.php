@@ -9,9 +9,9 @@ class StoreSupplierRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
-    {
-        return false;
+    public function authorize(): bool {
+//        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class StoreSupplierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "name" => "required|min:3|max:255|unique:suppliers",
+            "full_address" => "required|max:255",
+            "phone_number" => "required|min:11|max:13",
         ];
     }
 }

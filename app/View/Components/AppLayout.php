@@ -14,7 +14,7 @@ class AppLayout extends Component
     public function __construct(
         public string $title,
         public string $subTitle,
-        public string $active,
+        public string $active = "",
         public string $link = "",
         public string $action = "",
         public string $method = "",

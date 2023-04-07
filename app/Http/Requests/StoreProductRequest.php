@@ -9,9 +9,9 @@ class StoreProductRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
-    {
-        return false;
+    public function authorize(): bool {
+//        return false;
+        return true;
     }
 
     /**
@@ -19,10 +19,15 @@ class StoreProductRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
      */
-    public function rules(): array
-    {
+    public function rules(): array {
         return [
-            //
+          "name" => "required|min:3|max:255",
+          "category" => "required",
+          "quantity" => "required|numeric|min:1",
+          "unit" => "required",
+          "capital" => "required|numeric|min:100",
+          "selling_price" => "required|numeric|min:100",
+          "supplier" => "required",
         ];
     }
 }

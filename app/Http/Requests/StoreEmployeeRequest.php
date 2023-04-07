@@ -11,7 +11,8 @@ class StoreEmployeeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+//        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,12 @@ class StoreEmployeeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "national_identity_number" =>"required|min:16|max:16|unique:users",
+            "full_name" => "required|min:3|max:255",
+            "full_address" => "required|max:255",
+            "phone_number" => "required|min:11|max:13",
+            "username" => "required|min:8|max:255|unique:users",
+            "password" => "required|min:8|max:255",
         ];
     }
 }

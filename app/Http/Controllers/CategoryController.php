@@ -5,68 +5,63 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
-use Ramsey\Uuid\Uuid;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 
-class CategoryController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
-    public function index() {
-        return view('components.pages.app.categories', [
-            "categories" => Category::latest()->get(),
-        ]);
-    }
+class CategoryController extends Controller {
+  public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application {
+    return view("components.pages.app.categories.index", [
+      "categories" => Category::latest()->get(),
+    ]);
+  }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create() {
-        return view('components.pages.app.category.create');
-    }
+  public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application {
+    return view('components.pages.app.categories.create');
+  }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreCategoryRequest $request) {
-        Category::create([
-            "uuid" => Uuid::uuid4(),
-            "name" => $request->name,
-            "slug" => join("-", explode(" ", strtolower($request->name))),
-        ]);
+  public function store(StoreCategoryRequest $request) {
+    date_default_timezone_set("Asia/Jakarta");
 
-        return redirect()->route("categories.get")->with("success-category", "\"$request->name\" category has been added!");
-    }
+    Category::create([
+      "name" => $request->name,
+    ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Category $category)
-    {
-        //
-    }
+    return redirect()->route("categories.index")
+      ->with("success-category", "\"$request->name\" category has been added!");
+  }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Category $category)
-    {
-        //
-    }
+  public function show(Category $category) {
+
+  }
+
+  public function edit(Category $category) {
+    return view("components.pages.app.categories.edit", [
+      "category" => $category,
+    ])->with("success-category", "\"$category->name\" category has been updated!");
+  }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategoryRequest $request, Category $category)
-    {
-        //
+    public function update(UpdateCategoryRequest $request, Category $category) {
+      date_default_timezone_set("Asia/Jakarta");
+
+      $category->update([
+        "name" => $request->name,
+      ]);
+
+      return redirect()->route("categories.index")
+        ->with("success-category", "\"$category->name\" category has been updated!");
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
-    {
-        //
+    public function destroy(Category $category) {
+      $category->delete();
+
+      return redirect()->route("categories.index")
+        ->with("success-category", "\"$category->name\" category has been deleted!");
     }
 }
